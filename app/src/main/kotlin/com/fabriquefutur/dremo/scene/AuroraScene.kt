@@ -2,7 +2,6 @@ package com.fabriquefutur.dremo.scene
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
-import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
@@ -10,9 +9,11 @@ import androidx.compose.ui.graphics.drawscope.DrawScope
 import kotlin.math.sin
 
 /**
- * Northern lights over a snowy ridge. Each curtain is a row of vertical rays
- * whose height and brightness follow slow waves; a vertical gradient fades each
- * ray towards its tip.
+ * Northern lights over a snowy ridge. Each curtain is a row of soft rays that
+ * overlap by half their width, so the row reads as one band of light with no
+ * seams. A ray fades to nothing at its top and its bottom, its height and
+ * brightness follow slow waves, and the whole curtain sways sideways. Rays are
+ * drawn additively from one pre-rendered sprite per curtain colour.
  */
 class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
     private val rays = count(96, 24)
@@ -22,8 +23,9 @@ class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
     private val sts = FloatArray(starCount)
     private val stp = FloatArray(starCount)
 
+    private val raySprites = Array(CURTAINS) { Sprites.curtainRay(COLORS[it]) }
+
     private var sky: Brush = Brush.verticalGradient(listOf(Color.Black, Color.Black))
-    private val curtainBrushes = arrayOfNulls<Brush>(CURTAINS)
     private val ridge = Path()
     private val trees = Path()
 
@@ -35,19 +37,6 @@ class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
             startY = 0f,
             endY = h,
         )
-        for (k in 0 until CURTAINS) {
-            val base = baseY(k)
-            val c = COLORS[k]
-            // Transparent at the top, brightest near the bottom edge, a quick fade below it.
-            curtainBrushes[k] = Brush.verticalGradient(
-                0f to c.copy(alpha = 0f),
-                0.55f to c.copy(alpha = 0.22f),
-                0.88f to c.copy(alpha = 0.75f),
-                1f to c.copy(alpha = 0.15f),
-                startY = base - h * 0.42f,
-                endY = base + h * 0.05f,
-            )
-        }
         for (i in 0 until starCount) {
             stx[i] = rand(0f, w)
             sty[i] = rand(0f, h * 0.7f)
@@ -57,7 +46,7 @@ class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
         buildRidge()
     }
 
-    private fun baseY(k: Int): Float = h * (0.50f + 0.06f * k)
+    private fun baseY(k: Int): Float = h * (0.54f + 0.05f * k)
 
     private fun buildRidge() {
         ridge.rewind()
@@ -96,26 +85,31 @@ class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
             s.drawCircle(Color.White, sts[i], Offset(stx[i], sty[i]), alpha = 0.7f * tw)
         }
 
-        val rayW = w / rays
+        val spacing = w / rays
         // Back curtain first.
         for (k in CURTAINS - 1 downTo 0) {
-            val brush = curtainBrushes[k] ?: continue
+            val sprite = raySprites[k]
             val speed = 1f + 0.25f * k
             val base = baseY(k)
-            for (i in 0 until rays) {
-                val x = i * rayW
-                val phase = k * 1.7f
-                val bottom = base + h * 0.025f * sin(x * 0.0035f / unit * 0.6f + t * 0.30f * speed + phase)
-                val length = h * (0.20f +
-                    0.13f * (0.5f + 0.5f * sin(x * 0.0021f / unit + t * 0.22f * speed + phase)) +
-                    0.05f * sin(x * 0.0063f / unit - t * 0.55f * speed + phase))
-                val shimmer = 0.55f + 0.45f * sin(x * 0.0045f / unit + t * 0.7f * speed + phase * 2f)
-                s.drawRect(
-                    brush,
-                    topLeft = Offset(x, bottom - length),
-                    size = Size(rayW + 1f, length),
-                    alpha = (0.45f + 0.55f * shimmer) * (if (k == CURTAINS - 1) 0.7f else 1f),
-                    blendMode = BlendMode.Plus,
+            val phase = k * 1.7f
+            // A slow sideways drift of the whole curtain, up to about 3% of the width.
+            val sway = w * 0.03f * sin(t * 0.045f * speed + phase)
+            val dim = if (k == CURTAINS - 1) 0.75f else 1f
+            // One ray more than needed on each side, so the sway never uncovers an edge.
+            for (i in -1..rays) {
+                val x = i * spacing
+                val bottom = base + h * 0.03f * sin(x * 0.0035f / unit * 0.6f + t * 0.16f * speed + phase)
+                val length = h * (0.30f +
+                    0.14f * (0.5f + 0.5f * sin(x * 0.0021f / unit + t * 0.12f * speed + phase)) +
+                    0.05f * sin(x * 0.0063f / unit - t * 0.25f * speed + phase))
+                val shimmer = 0.5f + 0.5f * sin(x * 0.0045f / unit + t * 0.35f * speed + phase * 2f)
+                s.sprite(
+                    sprite,
+                    cx = x + sway,
+                    cy = bottom - length / 2f,
+                    width = spacing * 2f,
+                    height = length,
+                    alpha = (0.28f + 0.30f * shimmer) * dim,
                 )
             }
         }

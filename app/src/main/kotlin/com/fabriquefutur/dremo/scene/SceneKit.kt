@@ -5,11 +5,16 @@ import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Canvas
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.graphics.Paint
 import androidx.compose.ui.graphics.RadialGradientShader
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
+import kotlin.math.PI
+import kotlin.math.cos
+import kotlin.math.pow
 import kotlin.random.Random
 
 /**
@@ -92,6 +97,36 @@ object Sprites {
         canvas.drawCircle(Offset(r, r), r, paint)
         return bitmap
     }
+
+    /**
+     * One soft vertical ray in [color], for building light curtains. Alpha rises
+     * smoothly from nothing at the top to a peak near the bottom, then falls to
+     * nothing at the very bottom; across the width it follows a raised cosine, so
+     * rays drawn at half-width spacing add up to an even band with no seams.
+     */
+    fun curtainRay(color: Color, width: Int = 48, height: Int = 128): ImageBitmap {
+        val rgb = color.toArgb() and 0x00FFFFFF
+        val pixels = IntArray(width * height)
+        for (y in 0 until height) {
+            val v = (y + 0.5f) / height
+            val vertical = if (v < PEAK) {
+                val s = v / PEAK
+                (s * s * (3f - 2f * s)).pow(1.3f)
+            } else {
+                val f = (v - PEAK) / (1f - PEAK)
+                1f - f * f * (3f - 2f * f)
+            }
+            for (x in 0 until width) {
+                val horizontal = 0.5f - 0.5f * cos(2f * PI.toFloat() * (x + 0.5f) / width)
+                val a = (vertical * horizontal * 255f + 0.5f).toInt().coerceIn(0, 255)
+                pixels[y * width + x] = (a shl 24) or rgb
+            }
+        }
+        return android.graphics.Bitmap.createBitmap(pixels, width, height, android.graphics.Bitmap.Config.ARGB_8888)
+            .asImageBitmap()
+    }
+
+    private const val PEAK = 0.78f
 }
 
 /** Draws [image] centred on ([cx], [cy]) at [width] x [height] pixels. */
