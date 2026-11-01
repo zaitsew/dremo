@@ -49,6 +49,7 @@ import com.fabriquefutur.dremo.core.SceneId
 import com.fabriquefutur.dremo.core.SleepPhase
 import com.fabriquefutur.dremo.core.SleepTimerState
 import com.fabriquefutur.dremo.core.SoundChoices
+import com.fabriquefutur.dremo.core.SoundToggle
 import com.fabriquefutur.dremo.data.Settings
 import com.fabriquefutur.dremo.data.SettingsStore
 import com.fabriquefutur.dremo.scene.createRenderer
@@ -216,8 +217,13 @@ fun SceneScreen(
                         )
                     }
                     FocusButton(
-                        stringResource(R.string.overlay_sound, onOff(settings.soundEnabled)),
-                        { poke(); scope.launch { store.update { it.soundEnabled(!settings.soundEnabled) } } },
+                        stringResource(R.string.overlay_sound, onOff(SoundToggle.isOn(settings.soundEnabled, kind))),
+                        {
+                            poke()
+                            val next = SoundToggle.toggle(settings.soundEnabled, soundOverride, scene.defaultSound)
+                            soundOverride = next.choice
+                            scope.launch { store.update { it.soundEnabled(next.enabled) } }
+                        },
                         if (scene.isClock && !hasCity) Modifier.focusRequester(firstButton) else Modifier,
                     )
                     FocusButton(

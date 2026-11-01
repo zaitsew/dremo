@@ -52,4 +52,40 @@ class ScenesTest {
         assertEquals(SoundKind.entries.toSet(), seen.filterNotNull().toSet())
         assertNull(seen.last())
     }
+
+    @Test
+    fun `sound is on only when something plays`() {
+        assertTrue(SoundToggle.isOn(true, SoundKind.RAIN))
+        assertFalse(SoundToggle.isOn(true, null))
+        assertFalse(SoundToggle.isOn(false, SoundKind.RAIN))
+        assertEquals(SoundKind.WHITE, SoundToggle.effective(SoundKind.WHITE, SoundKind.RAIN))
+        assertEquals(SoundKind.RAIN, SoundToggle.effective(null, SoundKind.RAIN))
+        assertNull(SoundToggle.effective(null, null))
+    }
+
+    @Test
+    fun `turning sound on from none on a clock picks a default`() {
+        // The master switch is on by default, so a clock starts with sound "on" and no sound: the button shows off.
+        val state = SoundToggle.toggle(enabled = true, choice = null, sceneDefault = null)
+        assertEquals(SoundToggle.State(enabled = true, choice = SoundToggle.FALLBACK), state)
+        assertTrue(SoundToggle.isOn(state.enabled, SoundToggle.effective(state.choice, null)))
+        // Switched off in settings: same result.
+        assertEquals(state, SoundToggle.toggle(enabled = false, choice = null, sceneDefault = null))
+    }
+
+    @Test
+    fun `turning sound off keeps the pick, and on again plays it`() {
+        val off = SoundToggle.toggle(enabled = true, choice = SoundKind.OCEAN, sceneDefault = null)
+        assertEquals(SoundToggle.State(enabled = false, choice = SoundKind.OCEAN), off)
+        val on = SoundToggle.toggle(off.enabled, off.choice, null)
+        assertEquals(SoundToggle.State(enabled = true, choice = SoundKind.OCEAN), on)
+    }
+
+    @Test
+    fun `an ambience scene toggles without pinning its own sound`() {
+        val off = SoundToggle.toggle(enabled = true, choice = null, sceneDefault = SoundKind.FIRE)
+        assertEquals(SoundToggle.State(enabled = false, choice = null), off)
+        val on = SoundToggle.toggle(off.enabled, off.choice, SoundKind.FIRE)
+        assertEquals(SoundToggle.State(enabled = true, choice = null), on)
+    }
 }

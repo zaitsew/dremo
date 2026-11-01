@@ -42,3 +42,32 @@ object SoundChoices {
         return ORDER[(i + 1) % ORDER.size]
     }
 }
+
+/**
+ * What the overlay's Sound button means. Sound is only "on" when something
+ * plays: the master switch is on and the scene has a sound, its own or one the
+ * viewer picked. A clock face has none by default, so there the button must
+ * pick one before it can claim sound is on.
+ */
+object SoundToggle {
+    /** What turning sound on from nothing picks for a scene without its own sound. */
+    val FALLBACK = SoundKind.RAIN
+
+    /** The new master switch and the viewer's sound pick for this scene. */
+    data class State(val enabled: Boolean, val choice: SoundKind?)
+
+    /** True when a sound plays: switched on and a sound chosen. */
+    fun isOn(enabled: Boolean, effective: SoundKind?): Boolean = enabled && effective != null
+
+    /** The sound that plays: the viewer's pick, else the scene's own, else none. */
+    fun effective(choice: SoundKind?, sceneDefault: SoundKind?): SoundKind? = choice ?: sceneDefault
+
+    fun toggle(enabled: Boolean, choice: SoundKind?, sceneDefault: SoundKind?): State {
+        val effective = effective(choice, sceneDefault)
+        return when {
+            isOn(enabled, effective) -> State(enabled = false, choice = choice)
+            effective == null -> State(enabled = true, choice = FALLBACK)
+            else -> State(enabled = true, choice = choice)
+        }
+    }
+}
