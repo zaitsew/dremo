@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dremo</string>
+    <string name="tagline">Спокойный экран для вашего телевизора</string>
+    <string name="home_settings">Настройки</string>
+
+    <string name="scene_clock_digital">Цифровые часы</string>
+    <string name="scene_clock_flip">Флип-часы</string>
+    <string name="scene_clock_analog">Стрелочные часы</string>
+    <string name="scene_clock_words">Часы словами</string>
+    <string name="scene_rain">Дождь за окном</string>
+    <string name="scene_fireplace">Камин</string>
+    <string name="scene_aurora">Северное сияние</string>
+    <string name="scene_stars">Ночное небо</string>
+    <string name="scene_ocean">Океан на закате</string>
+    <string name="scene_lava">Лава-лампа</string>
+
+    <string name="sound_default">Звук сцены</string>
+    <string name="sound_none">Нет</string>
+    <string name="sound_white">Белый шум</string>
+    <string name="sound_pink">Розовый шум</string>
+    <string name="sound_brown">Коричневый шум</string>
+    <string name="sound_rain">Дождь</string>
+    <string name="sound_fire">Камин</string>
+    <string name="sound_ocean">Океан</string>
+
+    <string name="state_on">вкл.</string>
+    <string name="state_off">выкл.</string>
+    <string name="overlay_clock">Часы: %1$s</string>
+    <string name="overlay_weather">Погода: %1$s</string>
+    <string name="overlay_sound">Звук: %1$s</string>
+    <string name="overlay_volume">Громкость %1$d</string>
+    <string name="overlay_sound_kind">Вид звука: %1$s</string>
+    <string name="overlay_sleep_off">Таймер сна: выкл.</string>
+    <string name="overlay_sleep_left">Таймер сна: осталось %1$d мин</string>
+
+    <string name="cond_clear">Ясно</string>
+    <string name="cond_partly">Переменная облачность</string>
+    <string name="cond_cloudy">Облачно</string>
+    <string name="cond_fog">Туман</string>
+    <string name="cond_drizzle">Морось</string>
+    <string name="cond_rain">Дождь</string>
+    <string name="cond_snow">Снег</string>
+    <string name="cond_thunder">Гроза</string>
+    <string name="weather_range">Днём %1$s, ночью %2$s</string>
+    <string name="weather_credit">Данные о погоде: Open-Meteo.com</string>
+
+    <string name="settings_title">Настройки</string>
+    <string name="settings_hint">Нажмите OK, чтобы изменить настройку. Влево и вправо тоже меняют её.</string>
+    <string name="section_display">Экран</string>
+    <string name="section_weather">Погода</string>
+    <string name="section_night">Ночь</string>
+    <string name="section_screensaver">Заставка</string>
+    <string name="setting_clock_format">Формат времени</string>
+    <string name="format_auto">Автоматически (как в системе)</string>
+    <string name="format_12">12 часов</string>
+    <string name="format_24">24 часа</string>
+    <string name="setting_city">Город для погоды</string>
+    <string name="city_not_set">Не выбран</string>
+    <string name="setting_city_remove">Убрать город и выключить погоду</string>
+    <string name="setting_temp_unit">Единицы температуры</string>
+    <string name="unit_auto">Автоматически (по региону)</string>
+    <string name="unit_c">Цельсий (°C)</string>
+    <string name="unit_f">Фаренгейт (°F)</string>
+    <string name="setting_show_weather">Погода на часах</string>
+    <string name="setting_night">Ночное затемнение</string>
+    <string name="setting_night_from">Затемнять с</string>
+    <string name="setting_night_until">Затемнять до</string>
+    <string name="setting_dream_scene">Сцена заставки</string>
+    <string name="setting_dream_sound">Звук в заставке</string>
+    <string name="setting_screensaver">Использовать как заставку</string>
+    <string name="setting_about">О приложении</string>
+
+    <string name="city_title">Город для погоды</string>
+    <string name="city_hint">Введите название города и нажмите «Найти». Нажмите OK на поле, чтобы открыть клавиатуру.</string>
+    <string name="city_current">Сейчас: %1$s</string>
+    <string name="city_placeholder">Название города</string>
+    <string name="city_search">Найти</string>
+    <string name="city_searching">Поиск…</string>
+    <string name="city_none">Город не найден.</string>
+    <string name="city_error">Не удалось связаться с сервисом погоды. Проверьте сеть и попробуйте снова.</string>
+
+    <string name="saver_title">Dremo как заставка</string>
+    <string name="saver_intro">Dremo может работать как заставка телевизора. Где её включить, зависит от телевизора.</string>
+    <string name="saver_older_title">Android TV 11 и старше (Mi Box S, Shield, многие телевизоры Xiaomi)</string>
+    <string name="saver_older_body">Откройте настройки телевизора, затем «Настройки устройства», затем «Заставка» и выберите Dremo.</string>
+    <string name="saver_google_title">Google TV (Android 12 и новее)</string>
+    <string name="saver_google_body">В Google TV убрали выбор заставки, но сама настройка работает. Включите «Для разработчиков» и отладку по сети на телевизоре, подключитесь с компьютера через adb и выполните:</string>
+    <string name="saver_restore_title">Чтобы вернуть заставку Google TV, выполните:</string>
+    <string name="saver_note">Заставка показывает: %1$s. Сцену можно сменить в настройках. Звука в ней нет, пока вы не включите «Звук в заставке».</string>
+
+    <string name="about_title">О приложении Dremo</string>
+    <string name="about_version">Версия %1$s</string>
+    <string name="about_by">Fabrique Futur</string>
+    <string name="about_license">Открытый исходный код, лицензия MIT.</string>
+    <string name="about_source">Исходный код:</string>
+    <string name="about_credit">Данные о погоде: Open-Meteo.com (CC BY 4.0)</string>
+    <string name="about_privacy">Без рекламы, без аккаунтов, без аналитики. Из телевизора уходит только запрос погоды, и только после выбора города.</string>
+</resources>
