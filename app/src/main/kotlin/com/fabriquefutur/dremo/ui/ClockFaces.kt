@@ -64,14 +64,23 @@ data class ClockInput(
     val weather: WeatherText?,
 )
 
-/** Picks the composable for a clock face. The word clock falls back to the digital face where the language has none. */
+/**
+ * Picks the composable for a clock face. The word clock falls back to the digital face where the language has none.
+ * [preview] is for the small cards on the home screen: the date line is left out, so only the time itself competes for the space.
+ */
 @Composable
-fun ClockFace(id: SceneId, input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText) {
+fun ClockFace(
+    id: SceneId,
+    input: ClockInput,
+    modifier: Modifier = Modifier,
+    tint: Color = DremoColors.ClockText,
+    preview: Boolean = false,
+) {
     when {
-        id == SceneId.CLOCK_FLIP -> FlipClock(input, modifier, tint)
-        id == SceneId.CLOCK_ANALOG -> AnalogClock(input, modifier, tint)
-        id == SceneId.CLOCK_WORDS && WordClock.supports(input.locale.language) -> WordClockFace(input, modifier, tint)
-        else -> DigitalClock(input, modifier, tint)
+        id == SceneId.CLOCK_FLIP -> FlipClock(input, modifier, tint, preview)
+        id == SceneId.CLOCK_ANALOG -> AnalogClock(input, modifier, tint, preview)
+        id == SceneId.CLOCK_WORDS && WordClock.supports(input.locale.language) -> WordClockFace(input, modifier, tint, preview)
+        else -> DigitalClock(input, modifier, tint, preview)
     }
 }
 
@@ -80,13 +89,14 @@ private fun dpToSp(value: Float): TextUnit = with(LocalDensity.current) { value.
 
 /** The date, then the weather, under the time. Sizes follow [base], the size of the time text in dp. */
 @Composable
-private fun Caption(input: ClockInput, base: Float, tint: Color, withHours: Boolean = true) {
-    val dateSize = dpToSp(base * 0.13f)
-    Text(
-        input.dateText,
-        style = TextStyle(fontSize = dateSize, color = tint.copy(alpha = 0.8f), fontWeight = FontWeight.Light),
-        textAlign = TextAlign.Center,
-    )
+private fun Caption(input: ClockInput, base: Float, tint: Color, withHours: Boolean = true, showDate: Boolean = true) {
+    if (showDate) {
+        Text(
+            input.dateText,
+            style = TextStyle(fontSize = dpToSp(base * 0.13f), color = tint.copy(alpha = 0.8f), fontWeight = FontWeight.Light),
+            textAlign = TextAlign.Center,
+        )
+    }
     val weather = input.weather ?: return
     Text(
         weather.line,
@@ -105,7 +115,7 @@ private fun Caption(input: ClockInput, base: Float, tint: Color, withHours: Bool
 }
 
 @Composable
-fun DigitalClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText) {
+fun DigitalClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText, preview: Boolean = false) {
     val parts = ClockText.parts(input.time.hour, input.time.minute, input.use24h)
     BoxWithConstraints(modifier.fillMaxSize()) {
         val base = min(maxWidth.value * 0.25f, maxHeight.value * 0.42f)
@@ -132,13 +142,13 @@ fun DigitalClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color =
                     )
                 }
             }
-            Caption(input, base, tint)
+            Caption(input, base, tint, showDate = !preview)
         }
     }
 }
 
 @Composable
-fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText) {
+fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText, preview: Boolean = false) {
     val lines = WordClock.lines(input.locale.language, input.time.hour, input.time.minute).orEmpty()
     BoxWithConstraints(modifier.fillMaxSize()) {
         val longest = lines.maxOfOrNull { it.length } ?: 8
@@ -161,10 +171,12 @@ fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color 
                 )
             }
             Box(Modifier.height((size * 0.35f).dp))
-            Text(
-                input.dateText,
-                style = TextStyle(fontSize = dpToSp(size * 0.36f), color = tint.copy(alpha = 0.7f), fontWeight = FontWeight.Light),
-            )
+            if (!preview) {
+                Text(
+                    input.dateText,
+                    style = TextStyle(fontSize = dpToSp(size * 0.36f), color = tint.copy(alpha = 0.7f), fontWeight = FontWeight.Light),
+                )
+            }
             input.weather?.let {
                 Text(
                     it.line,
@@ -177,7 +189,7 @@ fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color 
 }
 
 @Composable
-fun AnalogClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText) {
+fun AnalogClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText, preview: Boolean = false) {
     BoxWithConstraints(modifier.fillMaxSize()) {
         val dial = min(maxHeight.value * 0.68f, maxWidth.value * 0.5f)
         val shift = LocalPixelShift.current
@@ -219,7 +231,7 @@ fun AnalogClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = 
                 drawCircle(Color(0xFFFDE68A), r * 0.035f, c)
             }
             Box(Modifier.height((dial * 0.04f).dp))
-            Caption(input, dial * 0.4f, tint)
+            Caption(input, dial * 0.4f, tint, showDate = !preview)
         }
     }
 }
@@ -227,7 +239,7 @@ fun AnalogClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = 
 // --- Flip clock -------------------------------------------------------------
 
 @Composable
-fun FlipClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText) {
+fun FlipClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = DremoColors.ClockText, preview: Boolean = false) {
     val parts = ClockText.parts(input.time.hour, input.time.minute, input.use24h)
     BoxWithConstraints(modifier.fillMaxSize()) {
         val cardH = min(maxHeight.value * 0.46f, maxWidth.value * 0.27f)
@@ -254,7 +266,7 @@ fun FlipClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = Dr
                 }
             }
             Box(Modifier.height((cardH * 0.08f).dp))
-            Caption(input, cardH * 0.9f, tint, withHours = false)
+            Caption(input, cardH * 0.9f, tint, withHours = false, showDate = !preview)
         }
     }
 }

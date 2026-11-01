@@ -23,9 +23,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.res.stringResource
@@ -105,21 +105,25 @@ private fun SceneCard(id: SceneId, input: ClockInput, modifier: Modifier, onClic
             .background(DremoColors.Card)
             .clickable(interactionSource = source, indication = null, onClick = onClick),
     ) {
-        if (id.isClock) {
-            ClockFace(id, input, Modifier.fillMaxSize())
-        } else {
-            val renderer = remember(id) { createRenderer(id, 0.4f) }
-            if (renderer != null) SceneCanvas(renderer, PREVIEW_FPS)
-        }
-        // The name sits on a scrim so it reads on any scene.
-        Box(
-            Modifier
-                .align(Alignment.BottomStart)
-                .fillMaxWidth()
-                .background(Brush.verticalGradient(listOf(Color.Transparent, Color(0xCC000000))))
-                .padding(start = 12.dp, end = 12.dp, top = 18.dp, bottom = 8.dp),
-        ) {
-            Text(stringResource(id.nameRes()), style = Type.BodyBold)
+        // Every card is the same two stacked parts: the preview above, the name below it.
+        // The preview gets only the space the label leaves, so the two never overlap.
+        Column(Modifier.fillMaxSize()) {
+            Box(Modifier.weight(1f).fillMaxWidth().clipToBounds()) {
+                if (id.isClock) {
+                    ClockFace(id, input, Modifier.fillMaxSize(), preview = true)
+                } else {
+                    val renderer = remember(id) { createRenderer(id, 0.4f) }
+                    if (renderer != null) SceneCanvas(renderer, PREVIEW_FPS)
+                }
+            }
+            Box(
+                Modifier
+                    .fillMaxWidth()
+                    .background(Color(0xCC000000))
+                    .padding(horizontal = 12.dp, vertical = 8.dp),
+            ) {
+                Text(stringResource(id.nameRes()), style = Type.BodyBold, maxLines = 1)
+            }
         }
         // Drawn last, above the preview, so the focus ring is never hidden.
         Box(
