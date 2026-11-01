@@ -66,7 +66,7 @@ Upload texts and graphics for every language with `tools/play-listing.sh`
 
 ## 4. Form factors
 
-Advanced settings, Form factors, **Add Android TV**, then opt in. The TV listing
+Console path `/app/4973750218896816751/advanced-distribution?tab=releaseTypes` (`advanced-settings` redirects home), **Add form factor**, Android TV, then opt in. The TV listing
 uses the TV banner and TV screenshots. Remove "Phone" if Play added it: the
 manifest requires leanback, so phones cannot install it anyway. Play reviews TV
 apps against the TV app quality guidelines: D-pad navigation everywhere, no
@@ -133,3 +133,9 @@ the code does, and it is the one to use.
 Dremo declares a `DreamService`. It runs only when the user selects it as the
 screensaver (Settings, "Use as screensaver", shows the `adb` command). The
 screensaver shows the cached forecast only and never fetches; sound is off by default.
+
+## 8. Submission history
+
+| date | version | state |
+|---|---|---|
+| 2026-11-01 | 0.1.0 (1) | first production release, sent for review, full rollout |
