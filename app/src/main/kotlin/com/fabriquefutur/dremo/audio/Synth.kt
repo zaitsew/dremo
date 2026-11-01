@@ -162,7 +162,7 @@ class FireSound(private val random: Random, private val sampleRate: Int) : Sound
 
     override fun fill(out: FloatArray, count: Int) {
         for (i in 0 until count) {
-            roarPhase += roarStep
+            roarPhase = advancePhase(roarPhase, roarStep)
             val roar = brown.next() * (0.75f + 0.25f * sin(roarPhase))
             if (random.nextFloat() < crackleChance) {
                 val big = random.nextFloat() < 0.15f
@@ -199,8 +199,8 @@ class OceanSound(private val random: Random, private val sampleRate: Int) : Soun
 
     override fun fill(out: FloatArray, count: Int) {
         for (i in 0 until count) {
-            phaseA += stepA
-            phaseB += stepB
+            phaseA = advancePhase(phaseA, stepA)
+            phaseB = advancePhase(phaseB, stepB)
             val swell = 0.5f + 0.5f * (0.6f * sin(phaseA) + 0.4f * sin(phaseB))
             val envelope = 0.15f + 0.85f * swell * swell
             lowpass += (0.02f + 0.2f * envelope) * (pink.next() - lowpass)
@@ -208,6 +208,17 @@ class OceanSound(private val random: Random, private val sampleRate: Int) : Soun
         }
     }
 }
+
+/**
+ * One oscillator step, kept within one turn. A Float phase left to grow stops
+ * advancing once the step is below its precision, about six minutes in for a slow swell.
+ */
+internal fun advancePhase(phase: Float, step: Float): Float {
+    val next = phase + step
+    return if (next >= TWO_PI) next - TWO_PI else next
+}
+
+private const val TWO_PI = (2.0 * PI).toFloat()
 
 /** Float to 16-bit PCM with a clamp, so a gain above 1 can never wrap around. */
 fun floatsToPcm(src: FloatArray, count: Int, gain: Float, dst: ShortArray) {

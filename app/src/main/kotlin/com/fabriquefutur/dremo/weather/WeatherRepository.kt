@@ -2,9 +2,12 @@ package com.fabriquefutur.dremo.weather
 
 import android.content.Context
 import android.util.Log
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,9 +19,12 @@ import kotlinx.serialization.json.Json
 import okhttp3.HttpUrl.Companion.toHttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import java.util.concurrent.TimeUnit
 
-private val Context.weatherStore by preferencesDataStore(name = "weather")
+// A corrupt file only loses the cached forecast: start empty instead of crashing every launch.
+private val Context.weatherStore by preferencesDataStore(
+    name = "weather",
+    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+)
 
 /**
  * Open-Meteo forecast and geocoding, no API key, no location permission. The
@@ -42,10 +48,12 @@ class WeatherRepository(context: Context) {
 
     /** Loads the cached forecast once, at start. */
     suspend fun loadCache() {
-        val text = store.data.first()[cacheKey] ?: return
         val cached = try {
-            json.decodeFromString<Weather>(text)
-        } catch (_: Exception) {
+            store.data.first()[cacheKey]?.let { json.decodeFromString<Weather>(it) }
+        } catch (e: CancellationException) {
+            throw e
+        } catch (e: Exception) {
+            Log.w(TAG, "Forecast cache unreadable", e)
             null
         }
         if (cached != null && _weather.value == null) _weather.value = cached

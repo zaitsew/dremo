@@ -87,27 +87,30 @@ fun ClockFace(
 @Composable
 private fun dpToSp(value: Float): TextUnit = with(LocalDensity.current) { value.dp.toSp() }
 
+/** Scales the alpha instead of replacing it, so a dimmed tint stays dim. */
+private fun Color.faded(factor: Float): Color = copy(alpha = alpha * factor)
+
 /** The date, then the weather, under the time. Sizes follow [base], the size of the time text in dp. */
 @Composable
 private fun Caption(input: ClockInput, base: Float, tint: Color, withHours: Boolean = true, showDate: Boolean = true) {
     if (showDate) {
         Text(
             input.dateText,
-            style = TextStyle(fontSize = dpToSp(base * 0.13f), color = tint.copy(alpha = 0.8f), fontWeight = FontWeight.Light),
+            style = TextStyle(fontSize = dpToSp(base * 0.13f), color = tint.faded(0.8f), fontWeight = FontWeight.Light),
             textAlign = TextAlign.Center,
         )
     }
     val weather = input.weather ?: return
     Text(
         weather.line,
-        style = TextStyle(fontSize = dpToSp(base * 0.095f), color = tint.copy(alpha = 0.7f)),
+        style = TextStyle(fontSize = dpToSp(base * 0.095f), color = tint.faded(0.7f)),
         textAlign = TextAlign.Center,
         modifier = Modifier.padding(top = (base * 0.03f).dp),
     )
     if (withHours && weather.hours != null) {
         Text(
             weather.hours,
-            style = TextStyle(fontSize = dpToSp(base * 0.075f), color = tint.copy(alpha = 0.55f)),
+            style = TextStyle(fontSize = dpToSp(base * 0.075f), color = tint.faded(0.55f)),
             textAlign = TextAlign.Center,
             modifier = Modifier.padding(top = (base * 0.015f).dp),
         )
@@ -137,7 +140,7 @@ fun DigitalClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color =
                 if (parts.suffix.isNotEmpty()) {
                     Text(
                         parts.suffix,
-                        style = TextStyle(fontSize = dpToSp(base * 0.2f), color = tint.copy(alpha = 0.7f)),
+                        style = TextStyle(fontSize = dpToSp(base * 0.2f), color = tint.faded(0.7f)),
                         modifier = Modifier.padding(start = (base * 0.04f).dp, top = (base * 0.16f).dp),
                     )
                 }
@@ -165,7 +168,7 @@ fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color 
                     style = TextStyle(
                         fontSize = dpToSp(size),
                         fontWeight = if (i == 0) FontWeight.ExtraLight else FontWeight.Normal,
-                        color = if (i == 0) tint.copy(alpha = 0.55f) else tint,
+                        color = if (i == 0) tint.faded(0.55f) else tint,
                         letterSpacing = dpToSp(size * 0.06f),
                     ),
                 )
@@ -174,13 +177,13 @@ fun WordClockFace(input: ClockInput, modifier: Modifier = Modifier, tint: Color 
             if (!preview) {
                 Text(
                     input.dateText,
-                    style = TextStyle(fontSize = dpToSp(size * 0.36f), color = tint.copy(alpha = 0.7f), fontWeight = FontWeight.Light),
+                    style = TextStyle(fontSize = dpToSp(size * 0.36f), color = tint.faded(0.7f), fontWeight = FontWeight.Light),
                 )
             }
             input.weather?.let {
                 Text(
                     it.line,
-                    style = TextStyle(fontSize = dpToSp(size * 0.3f), color = tint.copy(alpha = 0.6f)),
+                    style = TextStyle(fontSize = dpToSp(size * 0.3f), color = tint.faded(0.6f)),
                     modifier = Modifier.padding(top = (size * 0.08f).dp),
                 )
             }
@@ -203,13 +206,13 @@ fun AnalogClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = 
                 val c = center
                 val r = size.minDimension / 2f
                 val stroke = r * 0.012f
-                drawCircle(tint.copy(alpha = 0.25f), r, c, style = Stroke(stroke))
+                drawCircle(tint.faded(0.25f), r, c, style = Stroke(stroke))
                 for (i in 0 until 12) {
                     val a = i * PI.toFloat() / 6f
                     val major = i % 3 == 0
                     val len = if (major) r * 0.12f else r * 0.06f
                     drawLine(
-                        tint.copy(alpha = if (major) 0.9f else 0.45f),
+                        tint.faded(if (major) 0.9f else 0.45f),
                         Offset(c.x + sin(a) * (r * 0.92f - len), c.y - cos(a) * (r * 0.92f - len)),
                         Offset(c.x + sin(a) * r * 0.92f, c.y - cos(a) * r * 0.92f),
                         strokeWidth = if (major) r * 0.025f else r * 0.012f,
@@ -260,7 +263,7 @@ fun FlipClock(input: ClockInput, modifier: Modifier = Modifier, tint: Color = Dr
                 if (parts.suffix.isNotEmpty()) {
                     Text(
                         parts.suffix,
-                        style = TextStyle(fontSize = dpToSp(cardH * 0.16f), color = tint.copy(alpha = 0.7f)),
+                        style = TextStyle(fontSize = dpToSp(cardH * 0.16f), color = tint.faded(0.7f)),
                         modifier = Modifier.padding(start = (gap * 2f).dp),
                     )
                 }

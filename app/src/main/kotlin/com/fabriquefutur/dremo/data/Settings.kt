@@ -1,9 +1,11 @@
 package com.fabriquefutur.dremo.data
 
 import android.content.Context
+import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -16,6 +18,7 @@ import com.fabriquefutur.dremo.weather.TempUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.encodeToString
@@ -40,7 +43,11 @@ data class Settings(
         get() = NightSchedule(nightDim, nightStartMinute, nightEndMinute)
 }
 
-private val Context.settingsStore by preferencesDataStore(name = "settings")
+// A corrupt file falls back to the defaults instead of crashing every launch.
+private val Context.settingsStore by preferencesDataStore(
+    name = "settings",
+    corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
+)
 
 class SettingsStore(context: Context, scope: CoroutineScope) {
     private val store = context.applicationContext.settingsStore
@@ -48,6 +55,7 @@ class SettingsStore(context: Context, scope: CoroutineScope) {
 
     /** Always has a value: the defaults until DataStore has been read. */
     val settings: StateFlow<Settings> = store.data
+        .catch { emit(emptyPreferences()) }
         .map(::decode)
         .stateIn(scope, SharingStarted.Eagerly, Settings())
 

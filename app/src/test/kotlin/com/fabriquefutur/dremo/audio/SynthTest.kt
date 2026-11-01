@@ -135,4 +135,13 @@ class SynthTest {
         SoundKind.entries.forEach { assertEquals(it, SoundKind.fromKey(it.key)) }
         assertEquals(null, SoundKind.fromKey("zzz"))
     }
+
+    @Test
+    fun `a slow oscillator still advances after hours`() {
+        val step = (2.0 * Math.PI / (9.0 * rate)).toFloat()
+        var phase = 0f
+        repeat(rate * 3600 * 3) { phase = advancePhase(phase, step) }
+        assertTrue(phase < 2f * Math.PI.toFloat() + step)
+        assertTrue(advancePhase(phase, step) != phase)
+    }
 }

@@ -136,7 +136,7 @@ fun SceneScreen(
         }
     }
 
-    val gain by remember {
+    val gain by remember(settings.volume) {
         derivedStateOf { VolumeSteps.gain(settings.volume) * timer.volumeFactor(elapsed.value) }
     }
     SoundEffect(audio, kind.takeIf { settings.soundEnabled && phase != SleepPhase.DIM }, gain)
