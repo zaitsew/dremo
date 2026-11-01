@@ -1,6 +1,7 @@
 package com.fabriquefutur.dremo.weather
 
 import android.content.Context
+import android.util.Log
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
@@ -73,7 +74,8 @@ class WeatherRepository(context: Context) {
         }
     } catch (e: CancellationException) {
         throw e
-    } catch (_: Exception) {
+    } catch (e: Exception) {
+        Log.w(TAG, "Forecast failed", e)
         false
     }
 
@@ -91,7 +93,8 @@ class WeatherRepository(context: Context) {
             get(url.toString())?.let(WeatherParser::parseCities)
         } catch (e: CancellationException) {
             throw e
-        } catch (_: Exception) {
+        } catch (e: Exception) {
+            Log.w(TAG, "City search failed", e)
             null
         }
     }
@@ -102,11 +105,13 @@ class WeatherRepository(context: Context) {
             .header("User-Agent", "Dremo/0.1 (+https://github.com/zaitsew/dremo)")
             .build()
         client.newCall(request).execute().use { response ->
+            if (!response.isSuccessful) Log.w(TAG, "HTTP ${response.code} from ${request.url.host}")
             if (response.isSuccessful) response.body?.string() else null
         }
     }
 
     companion object {
+        private const val TAG = "DremoWeather"
         const val FORECAST_URL = "https://api.open-meteo.com/v1/forecast"
         const val GEOCODING_URL = "https://geocoding-api.open-meteo.com/v1/search"
 

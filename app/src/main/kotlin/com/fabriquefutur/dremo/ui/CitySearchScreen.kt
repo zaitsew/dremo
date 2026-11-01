@@ -2,10 +2,10 @@ package com.fabriquefutur.dremo.ui
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.focus.onFocusChanged
@@ -32,7 +33,9 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.KeyEventType
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onKeyEvent
+import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.input.key.type
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -41,8 +44,8 @@ import androidx.tv.material3.Text
 import com.fabriquefutur.dremo.R
 import com.fabriquefutur.dremo.weather.City
 import com.fabriquefutur.dremo.weather.WeatherRepository
-import kotlinx.coroutines.delay
 import java.util.Locale
+import kotlinx.coroutines.delay
 
 private sealed interface SearchState {
     data object Idle : SearchState
@@ -69,6 +72,7 @@ fun CitySearchScreen(
     var handledSearch by remember { mutableStateOf(0) }
     val fieldFocus = remember { FocusRequester() }
     val keyboard = LocalSoftwareKeyboardController.current
+    val focusManager = LocalFocusManager.current
     val language = remember { Locale.getDefault().language }
     var fieldFocused by remember { mutableStateOf(false) }
 
@@ -122,6 +126,16 @@ fun CitySearchScreen(
                         .fillMaxWidth()
                         .focusRequester(fieldFocus)
                         .onFocusChanged { fieldFocused = it.isFocused }
+                        // Compose only leaves a text field on hardware D-pads, so a virtual
+                        // remote (the phone remote app) would stay trapped here without this.
+                        .onPreviewKeyEvent { e ->
+                            if (e.type != KeyEventType.KeyDown) return@onPreviewKeyEvent false
+                            when (e.key) {
+                                Key.DirectionDown -> focusManager.moveFocus(FocusDirection.Down)
+                                Key.DirectionRight -> focusManager.moveFocus(FocusDirection.Right)
+                                else -> false
+                            }
+                        }
                         // On a TV, OK on a focused field is what opens the keyboard.
                         .onKeyEvent { e ->
                             if (e.type == KeyEventType.KeyUp && (e.key == Key.DirectionCenter || e.key == Key.Enter)) {

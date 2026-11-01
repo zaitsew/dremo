@@ -95,8 +95,9 @@ class AuroraScene(detail: Float = 1f, seed: Int = 3) : BaseScene(detail, seed) {
             // A slow sideways drift of the whole curtain, up to about 3% of the width.
             val sway = w * 0.03f * sin(t * 0.045f * speed + phase)
             val dim = if (k == CURTAINS - 1) 0.75f else 1f
-            // One ray more than needed on each side, so the sway never uncovers an edge.
-            for (i in -1..rays) {
+            // Enough extra rays on each side to cover the full sway, so it never uncovers an edge.
+            val overhang = (rays * 0.03f).toInt() + 2
+            for (i in -overhang..rays + overhang) {
                 val x = i * spacing
                 val bottom = base + h * 0.03f * sin(x * 0.0035f / unit * 0.6f + t * 0.16f * speed + phase)
                 val length = h * (0.30f +
