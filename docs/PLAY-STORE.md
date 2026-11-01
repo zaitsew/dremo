@@ -57,7 +57,7 @@ All in `docs/play/`, drawn by `swift tools/make-banner.swift`.
 | Android TV banner | 1280 x 720 | `tv-banner-1280x720.png` |
 | TV screenshots | 1920 x 1080, 1 to 8 per language | `screenshots/<locale>/` |
 
-Screenshots are not in the repo yet: they come from a device run (see the
+Screenshots are not in the repo yet: they come from a device run (the list
 screenshot list in the README of the release). Play still requires 2 to 8 phone
 screenshots on the default listing, even for a TV-only app; the phone slot accepts
 16:9, so `tools/play-listing.sh` uploads the same TV screenshots there.
