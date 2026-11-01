@@ -8,11 +8,11 @@
     <string name="scene_clock_flip">Reloj de tarjetas</string>
     <string name="scene_clock_analog">Reloj analógico</string>
     <string name="scene_clock_words">Reloj de palabras</string>
-    <string name="scene_rain">Lluvia en la ventana</string>
+    <string name="scene_rain">Lluvia</string>
     <string name="scene_fireplace">Chimenea</string>
     <string name="scene_aurora">Aurora boreal</string>
     <string name="scene_stars">Cielo nocturno</string>
-    <string name="scene_ocean">Océano al atardecer</string>
+    <string name="scene_ocean">Océano al ocaso</string>
     <string name="scene_lava">Lámpara de lava</string>
 
     <string name="sound_default">Sonido de la escena</string>

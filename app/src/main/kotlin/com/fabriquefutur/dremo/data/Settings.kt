@@ -16,10 +16,11 @@ import com.fabriquefutur.dremo.core.SceneId
 import com.fabriquefutur.dremo.weather.City
 import com.fabriquefutur.dremo.weather.TempUnit
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.retryWhen
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -49,13 +50,20 @@ private val Context.settingsStore by preferencesDataStore(
     corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
 )
 
+private const val READ_RETRY_MS = 5_000L
+
 class SettingsStore(context: Context, scope: CoroutineScope) {
     private val store = context.applicationContext.settingsStore
     private val json = Json { ignoreUnknownKeys = true }
 
     /** Always has a value: the defaults until DataStore has been read. */
     val settings: StateFlow<Settings> = store.data
-        .catch { emit(emptyPreferences()) }
+        // A failed read shows the defaults for now; retrying keeps later changes visible.
+        .retryWhen { _, _ ->
+            emit(emptyPreferences())
+            delay(READ_RETRY_MS)
+            true
+        }
         .map(::decode)
         .stateIn(scope, SharingStarted.Eagerly, Settings())
 
