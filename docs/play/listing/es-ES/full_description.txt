@@ -1,0 +1,41 @@
+Dremo convierte la tele en una pantalla tranquila cuando nadie la mira: un reloj grande, un fuego lento, lluvia en una ventana, un cielo de noche. Sin anuncios. Sin cuentas. Nada que configurar antes de usarla.
+
+RELOJES
+- Reloj digital grande, reloj de tarjetas, reloj analógico minimalista y reloj de palabras ("Son las diez y media").
+- Línea con la fecha y, si quieres, con el tiempo de la ciudad que elijas.
+- Formato de 12 o 24 horas, según la tele o a tu gusto.
+
+AMBIENTES
+- Lluvia en una ventana, chimenea, aurora, cielo estrellado, olas del mar al atardecer y lámpara de lava.
+- Cada escena se dibuja en directo dentro de la app: se ve nítida en cualquier tele y no ocupa espacio con vídeos.
+- Cada escena puede mostrar un pequeño reloj en una esquina.
+
+SONIDO CREADO EN LA TELE
+- Ruido blanco, rosa y marrón, lluvia, fuego crepitante y oleaje, generados al momento. Sin archivos de audio.
+- Cada escena tiene un sonido por defecto que le va bien. Puedes cambiarlo o quitarlo.
+- El sonido se detiene al salir de la app.
+
+TEMPORIZADOR DE SUEÑO
+- 15, 30, 60 o 90 minutos. El sonido se apaga poco a poco y la pantalla pasa a un reloj tenue.
+
+CUIDA TU TELE
+- El modo noche (de 23:00 a 07:00 por defecto) baja el brillo.
+- La imagen se desplaza unos píxeles cada minuto para repartir el desgaste del panel.
+- La pantalla permanece encendida mientras corre una escena, y solo entonces.
+
+ÚSALA COMO SALVAPANTALLAS
+- Dremo también es un salvapantallas de Android. En Ajustes verás el comando que lo activa desde un ordenador.
+
+EL TIEMPO, SOLO SI QUIERES
+- Elige una ciudad y Dremo muestra la temperatura y las próximas horas. La previsión viene de Open-Meteo.com, que no necesita cuenta.
+- Solo se envían las coordenadas de la ciudad elegida. Dremo no pide tu ubicación.
+
+PENSADA PARA EL SOFÁ
+- Todo se maneja con las flechas del mando. Letra grande, foco claro y nada pegado al borde de la pantalla.
+- Español, inglés y ruso.
+
+PRIVADA Y ABIERTA
+- Sin anuncios, sin analíticas, sin seguimiento, sin cuentas. Tus ajustes se quedan en la tele.
+- Gratis, de código abierto, licencia MIT: github.com/zaitsew/dremo
+
+Datos meteorológicos de Open-Meteo.com.

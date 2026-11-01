@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dremo_background">#05070D</color>
+    <color name="ic_launcher_background">#1E1B4B</color>
+
+    <style name="Theme.Dremo" parent="@android:style/Theme.Material.NoActionBar">
+        <item name="android:windowBackground">@color/dremo_background</item>
+        <item name="android:colorBackground">@color/dremo_background</item>
+        <item name="android:statusBarColor">@color/dremo_background</item>
+        <item name="android:navigationBarColor">@color/dremo_background</item>
+    </style>
+</resources>

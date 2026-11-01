@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dremo</string>
+    <string name="tagline">A calm screen for your TV</string>
+    <string name="home_settings">Settings</string>
+
+    <string name="scene_clock_digital">Digital clock</string>
+    <string name="scene_clock_flip">Flip clock</string>
+    <string name="scene_clock_analog">Analog clock</string>
+    <string name="scene_clock_words">Word clock</string>
+    <string name="scene_rain">Rain on a window</string>
+    <string name="scene_fireplace">Fireplace</string>
+    <string name="scene_aurora">Aurora</string>
+    <string name="scene_stars">Night sky</string>
+    <string name="scene_ocean">Ocean at dusk</string>
+    <string name="scene_lava">Lava lamp</string>
+
+    <string name="sound_default">Scene sound</string>
+    <string name="sound_none">None</string>
+    <string name="sound_white">White noise</string>
+    <string name="sound_pink">Pink noise</string>
+    <string name="sound_brown">Brown noise</string>
+    <string name="sound_rain">Rain</string>
+    <string name="sound_fire">Fireplace</string>
+    <string name="sound_ocean">Ocean</string>
+
+    <string name="state_on">on</string>
+    <string name="state_off">off</string>
+    <string name="overlay_clock">Clock: %1$s</string>
+    <string name="overlay_weather">Weather: %1$s</string>
+    <string name="overlay_sound">Sound: %1$s</string>
+    <string name="overlay_volume">Volume %1$d</string>
+    <string name="overlay_sound_kind">Sound type: %1$s</string>
+    <string name="overlay_sleep_off">Sleep timer: off</string>
+    <string name="overlay_sleep_left">Sleep timer: %1$d min left</string>
+
+    <string name="cond_clear">Clear</string>
+    <string name="cond_partly">Partly cloudy</string>
+    <string name="cond_cloudy">Cloudy</string>
+    <string name="cond_fog">Fog</string>
+    <string name="cond_drizzle">Drizzle</string>
+    <string name="cond_rain">Rain</string>
+    <string name="cond_snow">Snow</string>
+    <string name="cond_thunder">Thunderstorm</string>
+    <string name="weather_range">High %1$s, low %2$s</string>
+    <string name="weather_credit">Weather data by Open-Meteo.com</string>
+
+    <string name="settings_title">Settings</string>
+    <string name="settings_hint">Press OK to change a setting. Left and right also change it.</string>
+    <string name="section_display">Display</string>
+    <string name="section_weather">Weather</string>
+    <string name="section_night">Night</string>
+    <string name="section_screensaver">Screensaver</string>
+    <string name="setting_clock_format">Clock format</string>
+    <string name="format_auto">Automatic (system)</string>
+    <string name="format_12">12-hour</string>
+    <string name="format_24">24-hour</string>
+    <string name="setting_city">Weather city</string>
+    <string name="city_not_set">Not set</string>
+    <string name="setting_city_remove">Remove the city and turn weather off</string>
+    <string name="setting_temp_unit">Temperature unit</string>
+    <string name="unit_auto">Automatic (by region)</string>
+    <string name="unit_c">Celsius (°C)</string>
+    <string name="unit_f">Fahrenheit (°F)</string>
+    <string name="setting_show_weather">Weather on clocks</string>
+    <string name="setting_night">Night dimming</string>
+    <string name="setting_night_from">Dim from</string>
+    <string name="setting_night_until">Dim until</string>
+    <string name="setting_dream_scene">Screensaver scene</string>
+    <string name="setting_dream_sound">Sound in screensaver</string>
+    <string name="setting_screensaver">Use as screensaver</string>
+    <string name="setting_about">About</string>
+
+    <string name="city_title">Weather city</string>
+    <string name="city_hint">Type a city name, then press Search. Press OK on the field to open the keyboard.</string>
+    <string name="city_current">Current: %1$s</string>
+    <string name="city_placeholder">City name</string>
+    <string name="city_search">Search</string>
+    <string name="city_searching">Searching…</string>
+    <string name="city_none">No city found.</string>
+    <string name="city_error">Could not reach the weather service. Check the network and try again.</string>
+
+    <string name="saver_title">Use Dremo as a screensaver</string>
+    <string name="saver_intro">Dremo can run as the TV\'s screensaver. Where you turn it on depends on your TV.</string>
+    <string name="saver_older_title">Android TV 11 and older (Mi Box S, Shield, many Xiaomi TVs)</string>
+    <string name="saver_older_body">Open the TV\'s Settings, then Device Preferences, then Screen saver, and choose Dremo.</string>
+    <string name="saver_google_title">Google TV (Android 12 and newer)</string>
+    <string name="saver_google_body">Google TV removed the screensaver picker, but the setting still works. Turn on Developer options and Network debugging on the TV, connect from a computer with adb, and run:</string>
+    <string name="saver_restore_title">To go back to the Google TV screensaver, run:</string>
+    <string name="saver_note">The screensaver shows: %1$s. Change the scene in Settings. It has no sound unless you turn on Sound in screensaver.</string>
+
+    <string name="about_title">About Dremo</string>
+    <string name="about_version">Version %1$s</string>
+    <string name="about_by">By Fabrique Futur</string>
+    <string name="about_license">Open source under the MIT licence.</string>
+    <string name="about_source">Source code:</string>
+    <string name="about_credit">Weather data by Open-Meteo.com (CC BY 4.0)</string>
+    <string name="about_privacy">No ads, no accounts, no analytics. Only the weather request leaves the TV, and only after you choose a city.</string>
+</resources>

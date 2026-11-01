@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Dremo</string>
+    <string name="tagline">Una pantalla tranquila para tu tele</string>
+    <string name="home_settings">Ajustes</string>
+
+    <string name="scene_clock_digital">Reloj digital</string>
+    <string name="scene_clock_flip">Reloj de tarjetas</string>
+    <string name="scene_clock_analog">Reloj analógico</string>
+    <string name="scene_clock_words">Reloj de palabras</string>
+    <string name="scene_rain">Lluvia</string>
+    <string name="scene_fireplace">Chimenea</string>
+    <string name="scene_aurora">Aurora boreal</string>
+    <string name="scene_stars">Cielo nocturno</string>
+    <string name="scene_ocean">Océano al ocaso</string>
+    <string name="scene_lava">Lámpara de lava</string>
+
+    <string name="sound_default">Sonido de la escena</string>
+    <string name="sound_none">Ninguno</string>
+    <string name="sound_white">Ruido blanco</string>
+    <string name="sound_pink">Ruido rosa</string>
+    <string name="sound_brown">Ruido marrón</string>
+    <string name="sound_rain">Lluvia</string>
+    <string name="sound_fire">Chimenea</string>
+    <string name="sound_ocean">Océano</string>
+
+    <string name="state_on">sí</string>
+    <string name="state_off">no</string>
+    <string name="overlay_clock">Reloj: %1$s</string>
+    <string name="overlay_weather">Tiempo: %1$s</string>
+    <string name="overlay_sound">Sonido: %1$s</string>
+    <string name="overlay_volume">Volumen %1$d</string>
+    <string name="overlay_sound_kind">Tipo de sonido: %1$s</string>
+    <string name="overlay_sleep_off">Temporizador: apagado</string>
+    <string name="overlay_sleep_left">Temporizador: quedan %1$d min</string>
+
+    <string name="cond_clear">Despejado</string>
+    <string name="cond_partly">Parcialmente nublado</string>
+    <string name="cond_cloudy">Nublado</string>
+    <string name="cond_fog">Niebla</string>
+    <string name="cond_drizzle">Llovizna</string>
+    <string name="cond_rain">Lluvia</string>
+    <string name="cond_snow">Nieve</string>
+    <string name="cond_thunder">Tormenta</string>
+    <string name="weather_range">Máx. %1$s, mín. %2$s</string>
+    <string name="weather_credit">Datos meteorológicos de Open-Meteo.com</string>
+
+    <string name="settings_title">Ajustes</string>
+    <string name="settings_hint">Pulsa OK para cambiar un ajuste. Izquierda y derecha también lo cambian.</string>
+    <string name="section_display">Pantalla</string>
+    <string name="section_weather">Tiempo</string>
+    <string name="section_night">Noche</string>
+    <string name="section_screensaver">Salvapantallas</string>
+    <string name="setting_clock_format">Formato de hora</string>
+    <string name="format_auto">Automático (sistema)</string>
+    <string name="format_12">12 horas</string>
+    <string name="format_24">24 horas</string>
+    <string name="setting_city">Ciudad del tiempo</string>
+    <string name="city_not_set">Sin elegir</string>
+    <string name="setting_city_remove">Quitar la ciudad y apagar el tiempo</string>
+    <string name="setting_temp_unit">Unidad de temperatura</string>
+    <string name="unit_auto">Automática (según la región)</string>
+    <string name="unit_c">Celsius (°C)</string>
+    <string name="unit_f">Fahrenheit (°F)</string>
+    <string name="setting_show_weather">Tiempo en los relojes</string>
+    <string name="setting_night">Atenuar de noche</string>
+    <string name="setting_night_from">Atenuar desde</string>
+    <string name="setting_night_until">Atenuar hasta</string>
+    <string name="setting_dream_scene">Escena del salvapantallas</string>
+    <string name="setting_dream_sound">Sonido en el salvapantallas</string>
+    <string name="setting_screensaver">Usar como salvapantallas</string>
+    <string name="setting_about">Acerca de</string>
+
+    <string name="city_title">Ciudad del tiempo</string>
+    <string name="city_hint">Escribe el nombre de una ciudad y pulsa Buscar. Pulsa OK en el campo para abrir el teclado.</string>
+    <string name="city_current">Actual: %1$s</string>
+    <string name="city_placeholder">Nombre de la ciudad</string>
+    <string name="city_search">Buscar</string>
+    <string name="city_searching">Buscando…</string>
+    <string name="city_none">No se encontró ninguna ciudad.</string>
+    <string name="city_error">No se pudo conectar con el servicio del tiempo. Revisa la red e inténtalo de nuevo.</string>
+
+    <string name="saver_title">Usar Dremo como salvapantallas</string>
+    <string name="saver_intro">Dremo puede funcionar como salvapantallas del televisor. Dónde se activa depende de tu tele.</string>
+    <string name="saver_older_title">Android TV 11 o anterior (Mi Box S, Shield, muchas teles Xiaomi)</string>
+    <string name="saver_older_body">Abre los Ajustes de la tele, luego Preferencias del dispositivo, luego Salvapantallas, y elige Dremo.</string>
+    <string name="saver_google_title">Google TV (Android 12 o posterior)</string>
+    <string name="saver_google_body">Google TV quitó el selector de salvapantallas, pero el ajuste sigue funcionando. Activa las Opciones de desarrollador y la depuración por red en la tele, conéctate con adb desde un ordenador y ejecuta:</string>
+    <string name="saver_restore_title">Para volver al salvapantallas de Google TV, ejecuta:</string>
+    <string name="saver_note">El salvapantallas muestra: %1$s. Cambia la escena en Ajustes. No tiene sonido salvo que actives Sonido en el salvapantallas.</string>
+
+    <string name="about_title">Acerca de Dremo</string>
+    <string name="about_version">Versión %1$s</string>
+    <string name="about_by">De Fabrique Futur</string>
+    <string name="about_license">Código abierto con licencia MIT.</string>
+    <string name="about_source">Código fuente:</string>
+    <string name="about_credit">Datos meteorológicos de Open-Meteo.com (CC BY 4.0)</string>
+    <string name="about_privacy">Sin anuncios, sin cuentas, sin analítica. Solo la consulta del tiempo sale de la tele, y solo después de elegir una ciudad.</string>
+</resources>

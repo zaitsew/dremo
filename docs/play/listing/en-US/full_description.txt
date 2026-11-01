@@ -1,0 +1,41 @@
+Dremo turns the TV into a calm screen when nobody is watching: a big clock, a slow fire, rain on a window, a night sky. No ads. No accounts. Nothing to configure before it works.
+
+CLOCKS
+- Big digital clock, flip clock, minimal analog clock and a word clock ("It is half past ten", in English and Spanish).
+- Date line, and an optional weather line for the city you choose.
+- 12-hour or 24-hour time, following the TV setting or your choice.
+
+AMBIENCE
+- Rain on a window, a fireplace, an aurora, a starry night sky, ocean waves at dusk and a lava lamp.
+- Every scene is drawn live by the app, so it stays sharp on any TV and takes no storage for videos.
+- Each scene can show a small corner clock.
+
+SOUND THAT IS MADE ON THE TV
+- White, pink and brown noise, rain, a crackling fire and ocean swell, generated in real time. No audio files.
+- Every scene has a fitting default sound. Change it, or turn it off.
+- Sound stops when you leave the app.
+
+SLEEP TIMER
+- 15, 30, 60 or 90 minutes. The sound fades out and the screen turns into a dim clock.
+
+KIND TO YOUR TV
+- Night dimming on a schedule (23:00 to 07:00 by default) lowers the brightness.
+- The picture shifts by a few pixels every minute to spread the wear on the panel.
+- The screen stays on while a scene runs, and only then.
+
+USE IT AS THE SCREENSAVER
+- Dremo is also an Android screensaver. The Settings screen shows the one command that sets it up from a computer.
+
+WEATHER, ONLY IF YOU WANT IT
+- Pick a city and Dremo shows the temperature and the next hours. The forecast comes from Open-Meteo.com, which needs no account.
+- Only the coordinates of the chosen city are sent. Dremo does not ask for your location.
+
+MADE FOR THE SOFA
+- Everything works with the remote's D-pad. Large type, a clear focus, nothing too close to the screen edge.
+- English, Spanish and Russian.
+
+PRIVATE AND OPEN
+- No ads, no analytics, no tracking, no accounts. Your settings stay on the TV.
+- Free, open source, MIT licence: github.com/zaitsew/dremo
+
+Weather data by Open-Meteo.com.
