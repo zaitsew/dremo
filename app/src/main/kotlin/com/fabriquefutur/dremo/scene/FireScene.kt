@@ -15,7 +15,7 @@ import kotlin.math.sin
  * from white-yellow through orange to deep red as they rise, and a few embers.
  */
 class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
-    private val flameCount = count(100, 20)
+    private val flameCount = count(120, 24)
     private val fx = FloatArray(flameCount)
     private val fy = FloatArray(flameCount)
     private val fvx = FloatArray(flameCount)
@@ -35,7 +35,7 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
     private val eseed = FloatArray(emberCount)
 
     // Hot to cool.
-    private val flameSprites = Array(FLAME_COLORS.size) { Sprites.soft(FLAME_COLORS[it], core = 0.1f, size = 64) }
+    private val flameSprites = Array(FLAME_COLORS.size) { Sprites.soft(FLAME_COLORS[it], core = 0.1f, size = 96) }
     private val glowSprite = Sprites.soft(Color(0xFFFF7A1A), core = 0f, size = 128)
 
     private var background: Brush = Brush.verticalGradient(listOf(Color.Black, Color.Black))
@@ -45,15 +45,16 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
 
     override fun onResize() {
         background = Brush.verticalGradient(
-            0f to Color(0xFF060303),
-            0.7f to Color(0xFF110806),
-            1f to Color(0xFF1C0D08),
+            0f to Color(0xFF0A0403),
+            0.6f to Color(0xFF1B0B06),
+            1f to Color(0xFF30160B),
             startY = 0f,
             endY = h,
         )
         baseX = w * 0.5f
-        baseY = h * 0.80f
-        spread = w * 0.075f
+        baseY = h * 0.82f
+        // Half the width of the flame bed: with the logs, the fire fills about half the screen.
+        spread = w * 0.17f
         for (i in 0 until flameCount) {
             spawnFlame(i)
             fage[i] = random.nextFloat() * flife[i] // spread the first generation over the whole column
@@ -67,22 +68,22 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
     private fun spawnFlame(i: Int) {
         // Two draws averaged: more flames in the middle of the logs than at the ends.
         fx[i] = baseX + (random.nextFloat() + random.nextFloat() - 1f) * spread
-        fy[i] = baseY + rand(-10f, 10f) * unit
-        fvx[i] = rand(-14f, 14f) * unit
-        fvy[i] = -rand(150f, 290f) * unit
-        flife[i] = rand(0.7f, 1.5f)
+        fy[i] = baseY + rand(-14f, 14f) * unit
+        fvx[i] = rand(-20f, 20f) * unit
+        // Flames in the middle are larger and rise faster, so the fire has a peak.
+        val centre = (1f - kotlin.math.abs(fx[i] - baseX) / spread).coerceIn(0f, 1f)
+        fvy[i] = -rand(220f, 400f) * unit * (0.55f + 0.5f * centre)
+        flife[i] = rand(0.7f, 1.4f)
         fage[i] = 0f
-        // Flames in the middle are larger.
-        val centre = 1f - kotlin.math.abs(fx[i] - baseX) / spread
-        fsize[i] = rand(70f, 120f) * unit * (0.6f + 0.5f * centre.coerceIn(0f, 1f))
+        fsize[i] = rand(130f, 220f) * unit * (0.55f + 0.55f * centre)
         fseed[i] = rand(0f, 6.28f)
     }
 
     private fun spawnEmber(i: Int) {
         ex[i] = baseX + rand(-1f, 1f) * spread * 0.9f
-        ey[i] = baseY - rand(0f, 30f) * unit
-        evx[i] = rand(-30f, 30f) * unit
-        evy[i] = -rand(70f, 180f) * unit
+        ey[i] = baseY - rand(0f, 50f) * unit
+        evx[i] = rand(-50f, 50f) * unit
+        evy[i] = -rand(110f, 280f) * unit
         eage[i] = 0f
         elife[i] = rand(2f, 4.5f)
         eseed[i] = rand(0f, 6.28f)
@@ -96,7 +97,7 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
                 continue
             }
             val a = fage[i] / flife[i]
-            fx[i] += (fvx[i] + sin(t * 4f + fseed[i]) * 26f * unit * a) * dt
+            fx[i] += (fvx[i] + sin(t * 4f + fseed[i]) * 46f * unit * a) * dt
             fy[i] += fvy[i] * dt
         }
         for (i in 0 until emberCount) {
@@ -105,7 +106,7 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
                 spawnEmber(i)
                 continue
             }
-            ex[i] += (evx[i] + sin(t * 2.2f + eseed[i]) * 40f * unit) * dt
+            ex[i] += (evx[i] + sin(t * 2.2f + eseed[i]) * 70f * unit) * dt
             ey[i] += evy[i] * dt
         }
     }
@@ -115,11 +116,12 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
         val flicker = 0.85f + 0.15f * sin(t * 7f) * sin(t * 2.3f + 1f)
 
         // Light thrown on the room.
-        s.sprite(glowSprite, baseX, baseY - h * 0.12f, w * 0.95f, h * 1.25f, alpha = 0.38f * flicker)
+        s.sprite(glowSprite, baseX, baseY - h * 0.20f, w * 1.5f, h * 1.6f, alpha = 0.50f * flicker)
+        s.sprite(glowSprite, baseX, baseY, w * 1.1f, h * 0.5f, alpha = 0.40f * flicker)
 
         // Logs: two dark rounded bars, crossed a little, with a hot underside.
-        val logW = w * 0.20f
-        val logH = h * 0.052f
+        val logW = w * 0.42f
+        val logH = h * 0.075f
         s.rotate(-7f, Offset(baseX, baseY + logH * 0.5f)) {
             drawRoundRect(
                 Color(0xFF2A160C), Offset(baseX - logW * 0.55f, baseY), Size(logW * 1.1f, logH),
@@ -133,14 +135,14 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
             )
         }
         // Bed of coals under the flames.
-        s.sprite(glowSprite, baseX, baseY + logH * 0.5f, spread * 3.4f, logH * 3.2f, alpha = 0.8f * flicker)
+        s.sprite(glowSprite, baseX, baseY + logH * 0.5f, spread * 2.6f, logH * 3.2f, alpha = 0.8f * flicker)
 
         // Flames, additive. Colour index and brightness come from the age.
         for (i in 0 until flameCount) {
             val a = fage[i] / flife[i]
             val idx = (a * (flameSprites.size - 0.01f)).toInt().coerceIn(0, flameSprites.size - 1)
             val size = fsize[i] * (1f - 0.55f * a)
-            val alpha = (1f - a) * 0.55f
+            val alpha = (1f - a) * 0.42f
             s.sprite(flameSprites[idx], fx[i], fy[i], size * 0.8f, size * 1.3f, alpha = alpha)
         }
 
@@ -149,7 +151,7 @@ class FireScene(detail: Float = 1f, seed: Int = 2) : BaseScene(detail, seed) {
             val a = eage[i] / elife[i]
             val twinkle = 0.6f + 0.4f * sin(t * 9f + eseed[i])
             s.drawCircle(
-                Color(0xFFFFB04A), (2.2f + 1.6f * (1f - a)) * unit, Offset(ex[i], ey[i]),
+                Color(0xFFFFB04A), (3f + 2.2f * (1f - a)) * unit, Offset(ex[i], ey[i]),
                 alpha = (1f - a) * twinkle,
                 blendMode = BlendMode.Plus,
             )
