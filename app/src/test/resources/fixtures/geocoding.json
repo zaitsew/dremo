@@ -1,0 +1,47 @@
+{
+ "results": [
+  {
+   "id": 2509954,
+   "name": "Valencia",
+   "latitude": 39.46975,
+   "longitude": -0.37739,
+   "elevation": 13.0,
+   "feature_code": "PPLA",
+   "country_code": "ES",
+   "admin1_id": 2593109,
+   "timezone": "Europe/Madrid",
+   "population": 814208,
+   "country_id": 2510769,
+   "country": "Spain",
+   "admin1": "Valencian Community"
+  },
+  {
+   "id": 3625549,
+   "name": "Valencia",
+   "latitude": 10.16202,
+   "longitude": -68.00765,
+   "elevation": 479.0,
+   "feature_code": "PPLA",
+   "country_code": "VE",
+   "timezone": "America/Caracas",
+   "population": 1385000,
+   "country": "Venezuela",
+   "admin1": "Carabobo"
+  },
+  {
+   "id": 9999,
+   "name": "Madrid",
+   "latitude": 40.4165,
+   "longitude": -3.70256,
+   "country": "Spain",
+   "admin1": "Madrid"
+  },
+  {
+   "id": 1,
+   "name": "Nowhere",
+   "latitude": 1.0,
+   "longitude": 2.0
+  }
+ ],
+ "generationtime_ms": 0.9
+}
