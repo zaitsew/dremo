@@ -29,6 +29,8 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk       # then open Dremo
   Spanish). Date line and an optional weather line.
 - **Ambience:** six scenes drawn live on a Compose canvas, at a modest particle
   count so a Mi Box S-class TV keeps 30 fps or more.
+- **Corner clock:** a small clock in the corner of every ambience scene, on by
+  default. A switch in the scene's overlay turns it off; the screensaver follows it.
 - **Sound:** white, pink and brown noise, rain, a crackling fire and ocean swell,
   generated into an `AudioTrack` in real time. Each scene has a default sound;
   volume has ten steps.
