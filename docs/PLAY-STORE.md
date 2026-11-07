@@ -128,6 +128,15 @@ the code does, and it is the one to use.
 3. Production, after a day of use without a blocking problem. Play reviews the
    first production release and the TV form factor (allow up to 7 days).
 
+### Release notes
+
+Every release after 0.1.0 ships its own notes. Put one file per listing language in
+`docs/whats-new/<version>/` (`en-US.txt`, `es-ES.txt`, `ru-RU.txt`, at most 500 characters each)
+and pass `--notes-dir docs/whats-new/<version>/` to `~/ops/bin/play`. Write one line per change a
+user would notice, from the PRs merged since the last release. Never use a generic line such as
+"Bug fixes and improvements" (POLICY section 15). `tools/play-listing.sh` uploads listing text and
+graphics only, not release notes.
+
 ## 7. Screensaver note for reviewers
 
 Dremo declares a `DreamService`. It runs only when the user selects it as the
