@@ -13,6 +13,12 @@ pixel shifting to be kind to the panel. English, Spanish and Russian.
 The name comes from the Russian "дремать" (to doze) and "dream", the name of
 Android's screensaver API.
 
+## Install
+
+Version 0.1.0 (1) went to Google Play production review on 2026-11-01 as "Dremo: Calm TV
+Screen"; see [docs/PLAY-STORE.md](docs/PLAY-STORE.md) for the submission record. This repo
+does not record the review outcome, so check the Play Store on the TV. To build it yourself:
+
 ## Quick start
 
 ```sh
@@ -40,7 +46,8 @@ adb install -r app/build/outputs/apk/debug/app-debug.apk       # then open Dremo
   schedule (23:00 to 07:00 by default) dims the screen to about 40 percent.
   The screen is kept on only while a scene runs.
 - **Screensaver:** a `DreamService`. Settings > Use as screensaver shows the
-  `adb` command that selects it and the command that restores the default.
+  `adb` command that selects it and the command that restores the default. The
+  screensaver shows the cached forecast only and never fetches; its sound is off by default.
 - **Weather (optional):** pick a city; the forecast comes from Open-Meteo.
 
 ## How it works
@@ -84,3 +91,5 @@ is in [docs/ROADMAP.md](docs/ROADMAP.md).
 ## License
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur.
+
+<!-- teyla:reviewed 2026-11-13 -->
