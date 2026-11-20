@@ -1,0 +1,26 @@
+{
+  "name": "Dremo",
+  "tagline": "A calm screen for the TV nobody is watching.",
+  "summary": "Clocks and ambient scenes with synthesized sound for Google TV and Android TV.",
+  "accent": "#FDE68A",
+  "accent_dark": "#FDE68A",
+  "status": "building",
+  "kind": "app",
+  "platforms": ["Android TV"],
+  "pills": ["Open source", "No ads or account"],
+  "highlights": [
+    {"label": "CLOCKS", "title": "Four clock faces", "text": "Digital, flip, analog and word clock, with date and weather."},
+    {"label": "SCENES", "title": "Six live ambient scenes", "text": "Rain, fireplace, aurora, night sky, ocean, lava lamp."},
+    {"label": "SOUND", "title": "Sound made in code", "text": "Noise, rain, fire and surf, synthesized in real time."},
+    {"label": "SLEEP", "title": "Sleep timer", "text": "15 to 90 minutes, a 30 second fade, then a dim clock."},
+    {"label": "CARE", "title": "Kind to the panel", "text": "Pixel shift every minute and night dimming."},
+    {"label": "PRIVATE", "title": "No ads, no tracking", "text": "No accounts, no media files. English, Spanish, Russian."}
+  ],
+  "steps": [
+    {"title": "Install", "text": "Sideload the APK with adb."},
+    {"title": "Pick a scene", "text": "Choose a clock or scene with the D-pad."},
+    {"title": "Set the sound", "text": "Each scene has a default sound."},
+    {"title": "Set a timer", "text": "Optional sleep timer and night dimming."},
+    {"title": "Screensaver", "text": "Select Dremo as the TV's screensaver."}
+  ]
+}
