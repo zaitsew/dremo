@@ -1,23 +1,56 @@
-# Dremo
+<!-- Pictures: docs/readme/spec.json, drawn by readme-kit. Do not edit the SVGs by hand. -->
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/readme/hero-dark.svg"><img src="docs/readme/hero-light.svg" alt="Dremo: a calm screen for the TV nobody is watching. Clocks and ambient scenes with synthesized sound for Google TV and Android TV. Building, Android TV, open source, no ads or account." width="100%"></picture>
 
-An ad-free, open-source calm screen for Android TV and Google TV. When the TV
-is on and nobody is watching, Dremo shows a big clock or a slow ambience scene
-(rain on a window, a fireplace, an aurora, a night sky, ocean waves, a lava
-lamp) with a soft sound that the app itself synthesizes. No ads, no accounts, no
-tracking, and no video or audio files: every picture and sound is generated in
-code, so there are no asset licences either.
+**When the TV is on and nobody is watching, Dremo shows a big clock or a slow scene with soft sound.**
+Every picture and sound is generated in code, so there are no video or audio files and no asset licences.
+It is built for the living room: large type and full D-pad control. Status: building.
 
-Built for the living room: large type, full D-pad control, night dimming and
-pixel shifting to be kind to the panel. English, Spanish and Russian.
+[Docs](docs/index.md) · [Privacy](docs/privacy.md) · [Roadmap](docs/ROADMAP.md)
 
-The name comes from the Russian "дремать" (to doze) and "dream", the name of
-Android's screensaver API.
+<p align="center">
+  <img src="docs/play/screenshots/en-US/05-aurora.png" alt="The aurora scene with a digital clock, date and temperature in the top right corner" width="100%">
+</p>
+<p align="center">
+  <img src="docs/play/screenshots/en-US/04-fireplace.png" alt="The fireplace scene" width="49%">
+  <img src="docs/play/screenshots/en-US/06-ocean.png" alt="The ocean at dusk scene" width="49%">
+  <img src="docs/play/screenshots/en-US/07-rain.png" alt="The rain on a window scene" width="49%">
+  <img src="docs/play/screenshots/en-US/01-home.png" alt="The home screen: four clocks and four scenes to choose from" width="49%">
+</p>
 
-## Install
+## What it does
 
-Version 0.1.0 (1) went to Google Play production review on 2026-11-01 as "Dremo: Calm TV
-Screen"; see [docs/PLAY-STORE.md](docs/PLAY-STORE.md) for the submission record. This repo
-does not record the review outcome, so check the Play Store on the TV. To build it yourself:
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/readme/highlights-dark.svg"><img src="docs/readme/highlights-light.svg" alt="Four clock faces; six live ambient scenes; sound made in code; sleep timer; kind to the panel; no ads, no tracking" width="100%"></picture>
+
+- **Word clock.** Available in English and Spanish, with a date line and an optional weather line.
+- **Frame rate.** Scenes use a modest particle count, so a Mi Box S-class TV keeps 30 fps or more.
+- **Volume.** Ten steps. White, pink and brown noise are also available as sounds.
+- **Night schedule.** 23:00 to 07:00 by default; the screen dims to about 40 percent.
+- **Screen on.** The TV stays awake only while a scene runs.
+- **Screensaver.** A `DreamService`. Settings > Use as screensaver shows the `adb` command that selects it and the one that restores the default.
+- **Weather (optional).** Pick a city; the forecast comes from Open-Meteo.
+
+The name comes from the Russian "дремать" (to doze) and "dream", the name of Android's screensaver API.
+
+## How it works
+
+<picture><source media="(prefers-color-scheme: dark)" srcset="docs/readme/steps-dark.svg"><img src="docs/readme/steps-light.svg" alt="Install, pick a scene, set the sound, set a timer, use as screensaver" width="100%"></picture>
+
+Scenes run a frame loop capped at their frame rate and invalidate only the draw phase, so recomposition stays out of the hot path. The weather forecast is always fetched in Celsius and converted when shown.
+
+<details><summary>Where each piece lives</summary>
+
+Paths are under `app/src/main/kotlin/com/fabriquefutur/dremo/`.
+
+| Piece | Where |
+|---|---|
+| Pure logic (sleep timer, night schedule, pixel shift, word clock, clock text) | `core`, `clock` |
+| Sound synthesis and the `AudioTrack` writer | `audio/` |
+| Scenes: preallocated particles, pre-rendered soft sprites, no per-frame allocation | `scene/` |
+| Weather: Open-Meteo client, parser, cache, refresh policy | `weather/` |
+| Settings in DataStore | `data/` |
+| Screens (Compose for TV) and the screensaver | `ui/`, `dream/` |
+
+</details>
 
 ## Quick start
 
@@ -29,49 +62,11 @@ adb connect <tv-ip>:5555                                       # TV: Settings > 
 adb install -r app/build/outputs/apk/debug/app-debug.apk       # then open Dremo from the TV launcher
 ```
 
-## What it does
-
-- **Clocks:** big digital, flip, minimal analog and a word clock (English and
-  Spanish). Date line and an optional weather line.
-- **Ambience:** six scenes drawn live on a Compose canvas, at a modest particle
-  count so a Mi Box S-class TV keeps 30 fps or more.
-- **Corner clock:** a small clock in the corner of every ambience scene, on by
-  default. A switch in the scene's overlay turns it off; the screensaver follows it.
-- **Sound:** white, pink and brown noise, rain, a crackling fire and ocean swell,
-  generated into an `AudioTrack` in real time. Each scene has a default sound;
-  volume has ten steps.
-- **Sleep timer:** 15, 30, 60 or 90 minutes. The sound fades over 30 seconds and
-  the screen turns into a dim clock.
-- **Screen care:** the picture shifts a few pixels every minute, and a night
-  schedule (23:00 to 07:00 by default) dims the screen to about 40 percent.
-  The screen is kept on only while a scene runs.
-- **Screensaver:** a `DreamService`. Settings > Use as screensaver shows the
-  `adb` command that selects it and the command that restores the default. The
-  screensaver shows the cached forecast only and never fetches; its sound is off by default.
-- **Weather (optional):** pick a city; the forecast comes from Open-Meteo.
-
-## How it works
-
-| Piece | Where |
-|---|---|
-| Pure logic (sleep timer, night schedule, pixel shift, word clock, clock text) | `app/src/main/kotlin/com/fabriquefutur/dremo/core`, `clock` |
-| Sound synthesis and the `AudioTrack` writer | `audio/` |
-| Scenes: preallocated particles, pre-rendered soft sprites, no per-frame allocation | `scene/` |
-| Weather: Open-Meteo client, parser, cache, refresh policy | `weather/` |
-| Settings in DataStore | `data/` |
-| Screens (Compose for TV) and the screensaver | `ui/`, `dream/` |
-
-Scenes run a frame loop capped at their frame rate and invalidate only the
-draw phase, so recomposition stays out of the hot path. The weather forecast is
-always fetched in Celsius and converted when shown.
-
 ## Privacy
 
-No analytics, no ads, no crash-reporting SDK, no accounts, and no Google Play
-Services. The only network traffic is the optional weather: when you pick a
-city, its coordinates go to Open-Meteo, which needs no key. The app asks for
-no location permission. Settings and the last forecast stay on the TV. See
-[docs/privacy.md](docs/privacy.md).
+No analytics, no ads, no crash-reporting SDK, no accounts and no Google Play Services. The app asks for no location permission. Settings and the last forecast stay on the TV.
+
+The only network traffic is the optional weather: when you pick a city, its coordinates go to Open-Meteo, which needs no key. Full policy: [docs/privacy.md](docs/privacy.md).
 
 Weather data by [Open-Meteo.com](https://open-meteo.com/) (CC BY 4.0).
 
@@ -84,12 +79,18 @@ export JAVA_HOME=~/.local/jdk-21.0.12.1+1/Contents/Home   # or any JDK 17+
 swift tools/make-banner.swift   # redraws the banner, icon and store graphics (macOS)
 ```
 
-The Play listing texts are in [docs/play/listing](docs/play/listing); the
-Play Console answers are in [docs/PLAY-STORE.md](docs/PLAY-STORE.md); the plan
-is in [docs/ROADMAP.md](docs/ROADMAP.md).
+## Docs
+
+| Document | What is in it |
+|---|---|
+| [docs/index.md](docs/index.md) | Project site front page |
+| [docs/privacy.md](docs/privacy.md) | Privacy policy |
+| [docs/ROADMAP.md](docs/ROADMAP.md) | The plan |
+| [docs/PLAY-STORE.md](docs/PLAY-STORE.md) | Play Console answers |
+| [docs/play/listing](docs/play/listing) | Play listing texts (English, Spanish, Russian) |
 
 ## License
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur.
 
-<!-- teyla:reviewed 2026-11-13 -->
+<sub>Built by <a href="https://github.com/zaitsew">zaitsew</a> with a fleet of AI agents.</sub>
