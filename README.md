@@ -93,6 +93,6 @@ swift tools/make-banner.swift   # redraws the banner, icon and store graphics (m
 
 MIT, see [LICENSE](LICENSE). Copyright Fabrique Futur.
 
-<sub>Dremo draws no CRT scanlines. Your TV has enough pixels to dream without them.</sub>
+<img src=".github/egg/lepus.svg" width="527" alt="">
 
 <sub>Built by <a href="https://github.com/zaitsew">zaitsew</a> with a fleet of AI agents.</sub>
